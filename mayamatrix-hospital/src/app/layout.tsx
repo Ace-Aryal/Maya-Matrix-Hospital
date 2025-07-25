@@ -28,16 +28,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Navbar />
-        <MaxWidth>
-          <main className="min-h-[calc(100vh-56px-1px)] min-w-full flex flex-col">
-            {children}
-          </main>
-        </MaxWidth>
+
+        <main className="min-h-[calc(100vh-56px-1px)] min-w-full flex flex-col">
+          {children}
+        </main>
       </body>
     </html>
   );
