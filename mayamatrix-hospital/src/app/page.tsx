@@ -1,103 +1,157 @@
+import { Button } from "@/components/ui/button";
+import {
+  Ambulance,
+  Baby,
+  Brain,
+  HeartPulse,
+  Stethoscope,
+  Syringe,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+
+const servicesConfig: ServicesCardProps[] = [
+  {
+    title: "General Checkup",
+    description: "Routine health assessments to keep you in good shape.",
+    icon: <Stethoscope className="w-6 h-6 text-green-600" />,
+  },
+  {
+    title: "Vaccination",
+    description: "Stay protected with essential immunizations for all ages.",
+    icon: <Syringe className="w-6 h-6 text-green-600" />,
+  },
+  {
+    title: "Cardiology",
+    description: "Comprehensive heart care from diagnosis to treatment.",
+    icon: <HeartPulse className="w-6 h-6 text-green-600" />,
+  },
+  {
+    title: "Neurology",
+    description: "Expert care for brain and nervous system disorders.",
+    icon: <Brain className="w-6 h-6 text-green-600" />,
+  },
+  {
+    title: "Pediatrics",
+    description: "Gentle, specialized care for infants, children, and teens.",
+    icon: <Baby className="w-6 h-6 text-green-600" />,
+  },
+  {
+    title: "Emergency Services",
+    description: "24/7 emergency care when every second counts.",
+    icon: <Ambulance className="w-6 h-6 text-green-600" />,
+  },
+];
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex flex-col flex-1">
+      <section className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-2 mt-8 md:mt-16 items-center">
+        <div className="col-span-3 lg:col-span-1 px-4 sm:px-8 md:px-14 w-full mx-auto ">
+          <Image
+            width={350}
+            height={300}
+            src={
+              "https://res.cloudinary.com/dsdevazn9/image/upload/v1753443724/doctor-image-hero-section_ctvxwy.jpg"
+            }
+            alt="decorative image for landing page"
+            className="object-cover sm:hidden "
+          />
+          <p className="text-3xl my-2 font-semibold text-primary ">
+            Mayamatrix<span className="text-zinc-800"> Hospital</span>
+          </p>
+          <h1 className="text-5xl text-green-600 font-bold tracking-tight mb-4 ">
+            {" "}
+            Your Partner In Health and Wellness
+          </h1>
+          <p className="tracking-tight text-gray-600 text-md  ">
+            Whether it’s a routine check-up or complex treatment, Mayamatrix
+            Hospital offers comprehensive healthcare services tailored to your
+            needs. With a focus on both comfort and results, we’re here to
+            support your journey to better health every step of the way.
+          </p>
+          <div className="my-4">
+            <Link href={"/"}>
+              <Button className="cursor-pointer text-md rounded-full">
+                Book An Appointment
+              </Button>
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <div className="hidden md:block col-span-2 lg:col-span-1">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            width={500}
+            height={500}
+            src={
+              "https://res.cloudinary.com/dsdevazn9/image/upload/v1753443724/doctor-image-hero-section_ctvxwy.jpg"
+            }
+            alt="decorative image for landing page"
+            className="object-cover"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        </div>
+      </section>
+      <section className="mt-16 bg-green-100 py-8">
+        <h2 className="text-3xl font-bold mb-8 text-center text-green-600 ">
+          Our Healthcare Services
+        </h2>
+        <div
+          className="bg-green-50 w-fit mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3
+         gap-2  lg:gap-6 place-items-center "
         >
+          {servicesConfig.map(({ title, description, icon }) => (
+            <ServiceCard
+              key={title}
+              title={title}
+              description={description}
+              icon={icon}
+            />
+          ))}
+        </div>
+      </section>
+      <section className="mt-24 md:mt-16 flex flex-col md:flex-row-reverse md:px-16 justify-center items-center">
+        <div className="md:w-2/5 hidden md:block mx-auto p-4">
           <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            height={350}
+            width={300}
+            alt="about us image"
+            src={"/about.jpg"}
+            className="w-full object-cover"
+          ></Image>
+        </div>
+        <div className="flex flex-col md:w-3/5 mx-auto px-4 md:pr-8 lg:pr-16">
+          <h2 className="text-3xl font-bold mb-8 text-center text-green-600">
+            About Us
+          </h2>
+          <p className="tracking-tight text-gray-600">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste
+            quaerat odit odio facilis autem dicta accusantium, numquam, earum
+            commodi debitis consectetur pariatur quos nemo magni perspiciatis
+            laborum asperiores! Aspernatur quisquam labore minima mollitia quas
+            fugiat quos cum debitis officia delectus vero ipsum magni fuga natus
+            ipsa laborum velit, ab modi. Aspernatur quisquam labore minima
+            mollitia quas fugiat quos cum debitis officia delectus vero ipsum
+            magni fuga natus ipsa laborum velit, ab modi.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+type ServicesCardProps = {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+};
+function ServiceCard({ title, description, icon }: ServicesCardProps) {
+  return (
+    <div className="bg-primary hover:bg-primary/85 p-3  text-gray-50 rounded-lg  max-w-[22rem] flex gap-3 items-center">
+      <div className="rounded-full bg-white w-[30%] aspect-square grid place-items-center">
+        {icon}
+      </div>
+      <div className="flex flex-col">
+        <h3 className="my-1 text-xl font-semibold">{title}</h3>
+        <p>{description}</p>
+      </div>
     </div>
   );
 }
