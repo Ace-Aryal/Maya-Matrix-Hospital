@@ -1,8 +1,9 @@
 "use client";
 import authService from "@/appwrite/auth/auth";
+import { useAuthContext } from "@/components/templates/providers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { Loader2, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -14,6 +15,8 @@ type LoginFormInputs = {
 
 export default function LoginForm() {
   const router = useRouter();
+  const { dispatchAuth } = useAuthContext();
+
   const {
     register,
     reset,
@@ -24,10 +27,33 @@ export default function LoginForm() {
 
   const onSubmit = async (formData: LoginFormInputs) => {
     const { email, password } = formData;
-    const response = await authService.login({ email, password });
-    if (response) {
-      toast.success("Logged in sucessfully!");
-      router.push("/dashboard");
+    try {
+      if (!dispatchAuth) {
+        throw new Error("Client error");
+      }
+      const currentUser = await authService.getuser();
+      // sometimes appwrite cache is not busted during logout so busting the cache
+      if (currentUser && currentUser.$id) {
+        await authService.logout();
+      }
+      const response = await authService.login({ email, password });
+      if (response) {
+        // doing same operation after login to get user metadata
+        const currentUser = await authService.getuser();
+        if (!currentUser) {
+          throw new Error("Login failed");
+        }
+        dispatchAuth({
+          isLoggedIn: true,
+          roles: currentUser.labels,
+          username: currentUser.name || "User",
+        });
+        toast.success("Logged in sucessfully!");
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      toast.error("Error Logging in");
+      console.error(error);
     }
   };
 

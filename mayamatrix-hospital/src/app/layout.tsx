@@ -4,6 +4,7 @@ import "./globals.css";
 import MaxWidth from "@/components//templates/max-width";
 import Navbar from "@/components/organisms/navbar";
 import { Toaster } from "sonner";
+import Providers from "@/components/templates/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,12 +34,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster richColors position="top-center" />
-        <Navbar />
-
-        <main className="min-h-[calc(100vh-56px-1px)] min-w-full flex flex-col">
-          {children}
-        </main>
+        <Providers>
+          <Toaster richColors position="top-center" />
+          <Navbar />
+          <main className="min-h-[calc(100vh-56px-1px)] min-w-full flex flex-col">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
