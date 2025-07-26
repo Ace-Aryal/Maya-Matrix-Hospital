@@ -1,5 +1,6 @@
 "use server";
-
+// server actions for admin dashboard crud operations
+// invoked from client components using react query
 import { prisma } from "@/lib/prisma";
 
 export async function getAppointments() {

@@ -1,3 +1,4 @@
+// doctor dashboard page
 "use client";
 import { useAuthContext } from "@/components/templates/providers";
 import React from "react";

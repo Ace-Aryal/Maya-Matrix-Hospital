@@ -2,16 +2,7 @@
 import React, { useState } from "react";
 import MaxWidth from "../templates/max-width";
 import { Button } from "../ui/button";
-import {
-  Users,
-  LogOut,
-  LogIn,
-  File,
-  Menu,
-  CrossIcon,
-  X,
-  Loader2,
-} from "lucide-react";
+import { LogOut, LogIn, Menu, X, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -47,6 +38,7 @@ function Navbar() {
     }
   };
   const pathname = usePathname();
+  // Role based dahboard path
   const dashboardPath = !isAuthenticated
     ? "/"
     : `/dashboard/${roles ? roles[0] : "user"}`;
@@ -150,6 +142,9 @@ function Navbar() {
               >
                 {isAuthenticated ? (
                   <>
+                    <Link href={dashboardPath}>
+                      <Button variant="link">Dashboard</Button>
+                    </Link>
                     <Button
                       onClick={handleSubmit(handleLogout)}
                       className="cursor-pointer w-32"

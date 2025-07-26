@@ -1,3 +1,4 @@
+// user dahboard page
 "use client";
 import { useAuthContext } from "@/components/templates/providers";
 import { notFound } from "next/navigation";

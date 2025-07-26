@@ -1,3 +1,4 @@
+// login form using React Hook Form and appwrite
 "use client";
 import authService from "@/appwrite/auth/auth";
 import { useAuthContext } from "@/components/templates/providers";
@@ -40,7 +41,7 @@ export default function LoginForm() {
       if (!response) {
         throw new Error("Invalid credentials");
       }
-      // doing same operation after login to get user metadata
+      // getting user metadata to get role
       const currentUser = await authService.getuser();
       if (!currentUser) {
         throw new Error("Login failed");
