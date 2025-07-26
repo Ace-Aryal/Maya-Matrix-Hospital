@@ -10,6 +10,7 @@ import {
   Baby,
   Brain,
   HeartPulse,
+  Loader2,
   Mail,
   MapPin,
   Phone,
@@ -18,6 +19,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { FieldValue, useForm } from "react-hook-form";
+import { p } from "motion/react-client";
+import { toast } from "sonner";
 
 const servicesConfig: ServicesCardProps[] = [
   {
@@ -51,8 +55,45 @@ const servicesConfig: ServicesCardProps[] = [
     icon: <Ambulance className="w-6 h-6 text-green-600" />,
   },
 ];
-
+type FormFields = {
+  name: string;
+  phone: string;
+  message: string;
+};
 export default function Home() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting, errors },
+  } = useForm<FormFields>();
+
+  const onSubmit = async (formData: FormFields) => {
+    const { name, message, phone } = formData;
+    try {
+      const response = await fetch("https://formspree.io/f/mgvykzye", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          phone,
+          message,
+        }),
+      });
+
+      if (response.ok) {
+        toast.success("Message sent sucessfully");
+        reset();
+      } else {
+        throw new Error("Bad API request");
+      }
+    } catch (error) {
+      toast.error("Error sending message");
+    }
+  };
   return (
     <div className="flex flex-col flex-1">
       {/* Hero section starts */}
@@ -256,28 +297,73 @@ export default function Home() {
               </div>
             </div>
             <form
-              action="https://formspree.io/f/mgvykzye"
+              onSubmit={handleSubmit(onSubmit)}
+              action=""
               method="POST"
               className="w-full max-w-[22rem]  py-2 space-y-4 flex flex-col items-center
             rounded-lg "
             >
-              <Input
-                className="py-6 bg-white"
-                required
-                placeholder="Your Full Name"
-              />
-              <Input
-                className="py-6 bg-white"
-                type="text"
-                required
-                placeholder="Your Phone"
-              />
-              <Textarea
-                className="py-5 bg-white min-h-24"
-                placeholder="Your Message"
-              ></Textarea>
-              <Button className="w-fit mt-2 p-5 text-lg" type="submit">
-                Send Message
+              <div className="w-full">
+                {" "}
+                <Input
+                  {...register("name", {
+                    minLength: {
+                      value: 3,
+                      message: "Enter valid name",
+                    },
+                  })}
+                  className="py-6 bg-white"
+                  required
+                  placeholder="Your Full Name"
+                />
+                {errors?.name && (
+                  <p className="text-sm text-red-500">{errors.name.message}</p>
+                )}
+              </div>
+
+              <div className="w-full">
+                {" "}
+                <Input
+                  {...register("phone", {
+                    pattern: {
+                      // nepali landline and mobile number regex
+                      value: /^(?:98|97)\d{8}$|^0\d{1,2}\d{6,7}$/,
+                      message: "Enter valid nepali phone number",
+                    },
+                  })}
+                  className="py-6 bg-white"
+                  type="text"
+                  required
+                  placeholder="Your Phone"
+                />
+                {errors?.phone && (
+                  <p className="text-sm text-red-500">{errors.phone.message}</p>
+                )}
+              </div>
+              <div className="w-full">
+                <Textarea
+                  {...register("message", {
+                    minLength: {
+                      value: 5,
+                      message: "Message is too short",
+                    },
+                  })}
+                  className="py-5 bg-white min-h-24"
+                  placeholder="Your Message"
+                ></Textarea>
+                {errors?.message && (
+                  <p className="text-sm text-red-500">
+                    {errors.message.message}
+                  </p>
+                )}
+              </div>
+
+              <Button className="w-32 mt-2 p-5 text-lg" type="submit">
+                {isSubmitting ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  "Send Message"
+                )}
               </Button>
             </form>
           </div>

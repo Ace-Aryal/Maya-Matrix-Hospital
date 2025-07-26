@@ -6,9 +6,11 @@ import { Users, LogOut, LogIn, File, Menu, CrossIcon, X } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+
 function Navbar() {
   const isAuthenticated = false;
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
+
   return (
     <header
       className={cn(
