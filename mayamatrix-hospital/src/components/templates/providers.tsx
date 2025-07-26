@@ -2,6 +2,7 @@
 "use client";
 import authService from "@/appwrite/auth/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 type TAuthContext = {
   isLoggedIn: boolean;
   username: string | null;
@@ -33,7 +34,10 @@ function Providers({ children }: { children: React.ReactNode }) {
   }, []);
   return (
     <AuthContext.Provider value={{ ...authData, dispatchAuth: setAuthData }}>
-      {children}
+      <QueryClientProvider client={new QueryClient()}>
+        {" "}
+        {children}
+      </QueryClientProvider>
     </AuthContext.Provider>
   );
 }

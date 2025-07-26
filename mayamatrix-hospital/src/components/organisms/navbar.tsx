@@ -61,16 +61,6 @@ function Navbar() {
         <nav className=" gap-2 sm:gap-3 items-center hidden sm:flex">
           {isAuthenticated ? (
             <>
-              <Link href={"/tickets"}>
-                <Button className="" variant={"link"}>
-                  <File className="h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href={"/customers"}>
-                <Button variant={"link"}>
-                  <Users className="h-5 w-5" />
-                </Button>
-              </Link>
               <Button
                 onClick={handleSubmit(handleLogout)}
                 className="cursor-pointer"
@@ -143,18 +133,6 @@ function Navbar() {
               >
                 {isAuthenticated ? (
                   <>
-                    <Link href={"/tickets"}>
-                      <Button className="" variant={"link"}>
-                        {" "}
-                        <File className="h-5 w-5" />
-                      </Button>
-                    </Link>
-                    <Link href={"/customers"}>
-                      <Button variant={"link"}>
-                        {" "}
-                        <Users className="h-5 w-5" />
-                      </Button>
-                    </Link>
                     <Button
                       onClick={handleSubmit(handleLogout)}
                       className="cursor-pointer w-32"

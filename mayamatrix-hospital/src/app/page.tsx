@@ -213,7 +213,7 @@ export default function Home() {
           transition={{
             duration: 0.5,
           }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.4 }}
           id="about"
           className="mt-24 md:mt-16 flex flex-col md:flex-row-reverse md:px-16 justify-center items-center"
         >
@@ -256,7 +256,7 @@ export default function Home() {
         transition={{
           duration: 0.5,
         }}
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ once: true, amount: 0.4 }}
         id="contact"
         className="bg-green-100 mt-20 px-6 "
       >
