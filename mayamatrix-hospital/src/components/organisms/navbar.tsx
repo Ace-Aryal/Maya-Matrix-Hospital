@@ -19,10 +19,12 @@ import { useAuthContext } from "../templates/providers";
 import { useForm } from "react-hook-form";
 import authService from "@/appwrite/auth/auth";
 import { toast } from "sonner";
+import { usePathname, useRouter } from "next/navigation";
 
 function Navbar() {
-  const { isLoggedIn: isAuthenticated, dispatchAuth } = useAuthContext();
+  const { isLoggedIn: isAuthenticated, dispatchAuth, roles } = useAuthContext();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
+  const router = useRouter();
   const {
     handleSubmit,
     formState: { isSubmitting },
@@ -38,11 +40,16 @@ function Navbar() {
         roles: null,
         username: null,
       });
+      router.push("/");
     } catch (error) {
       console.error(error);
       toast.error("Error logging out");
     }
   };
+  const pathname = usePathname();
+  const dashboardPath = !isAuthenticated
+    ? "/"
+    : `/dashboard/${roles ? roles[0] : "user"}`;
   return (
     <header
       className={cn(
@@ -61,6 +68,16 @@ function Navbar() {
         <nav className=" gap-2 sm:gap-3 items-center hidden sm:flex">
           {isAuthenticated ? (
             <>
+              <Link href={dashboardPath}>
+                <Button
+                  className={cn("", {
+                    "bg-green-100": pathname.includes("/dashboard"),
+                  })}
+                  variant="link"
+                >
+                  Dashboard
+                </Button>
+              </Link>
               <Button
                 onClick={handleSubmit(handleLogout)}
                 className="cursor-pointer"

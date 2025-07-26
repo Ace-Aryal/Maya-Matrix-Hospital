@@ -19,9 +19,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { FieldValue, useForm } from "react-hook-form";
-import { p } from "motion/react-client";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useAuthContext } from "@/components/templates/providers";
 
 const servicesConfig: ServicesCardProps[] = [
   {
@@ -94,6 +94,7 @@ export default function Home() {
       toast.error("Error sending message");
     }
   };
+
   return (
     <div className="flex flex-col flex-1">
       {/* Hero section starts */}
