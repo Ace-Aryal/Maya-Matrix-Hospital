@@ -7,11 +7,12 @@ import { Plus } from "lucide-react";
 import React from "react";
 import { getAppointments } from "./actions";
 import { toast } from "sonner";
+import { AdminDashboardDataTable } from "./data-table";
 
 function AdminDashboard() {
-  const { roles } = useAuthContext();
+  const { roles, username } = useAuthContext();
   const isAdmin = roles?.includes("admin");
-  const { data: appointments, isLoading } = useQuery({
+  const { data: appointments } = useQuery({
     queryKey: ["get-appointments", isAdmin],
     queryFn: async () => {
       try {
@@ -46,7 +47,7 @@ function AdminDashboard() {
         id="top"
         className="flex max-w-6xl mx-auto px-4  flex-col sm:flex-row sm:items-center justify-between mt-6 sm:mt-12"
       >
-        <h1 className="text-7xl font-semibold  ">Welcome Admin</h1>
+        <h1 className="text-7xl font-semibold  ">Welcome {username}</h1>
         <Button
           variant={"modern"}
           className="w-fit my-6 sm:my-0 py-5  flex items-center text-md"
@@ -54,7 +55,9 @@ function AdminDashboard() {
           Add New Appointment <Plus className="w-6 h-6" />
         </Button>
       </section>
-      <section id="bottom"></section>
+      <section id="bottom" className="my-8 mt-16">
+        <AdminDashboardDataTable data={appointments?.data || []} />
+      </section>
     </MaxWidth>
   );
 }
