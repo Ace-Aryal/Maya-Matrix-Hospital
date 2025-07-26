@@ -31,26 +31,33 @@ export default function LoginForm() {
       if (!dispatchAuth) {
         throw new Error("Client error");
       }
-      const currentUser = await authService.getuser();
+      const cacheCurrentUser = await authService.getuser();
       // sometimes appwrite cache is not busted during logout so busting the cache
-      if (currentUser && currentUser.$id) {
+      if (cacheCurrentUser && cacheCurrentUser.$id) {
         await authService.logout();
       }
       const response = await authService.login({ email, password });
-      if (response) {
-        // doing same operation after login to get user metadata
-        const currentUser = await authService.getuser();
-        if (!currentUser) {
-          throw new Error("Login failed");
-        }
-        dispatchAuth({
-          isLoggedIn: true,
-          roles: currentUser.labels,
-          username: currentUser.name || "User",
-        });
-        toast.success("Logged in sucessfully!");
-        router.push("/dashboard");
+      if (!response) {
+        throw new Error("Invalid credentials");
       }
+      // doing same operation after login to get user metadata
+      const currentUser = await authService.getuser();
+      if (!currentUser) {
+        throw new Error("Login failed");
+      }
+      dispatchAuth({
+        isLoggedIn: true,
+        roles: currentUser.labels,
+        username: currentUser.name || "User",
+      });
+      const { labels } = currentUser;
+      const dashboardPath = labels.includes("admin")
+        ? "/dashboard/admin"
+        : labels.includes("doctor")
+        ? "/dashboard/doctor"
+        : "/dashboard/user";
+      toast.success("Logged in sucessfully!");
+      router.push(dashboardPath);
     } catch (error) {
       toast.error("Error Logging in");
       console.error(error);

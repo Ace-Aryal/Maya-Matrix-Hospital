@@ -5,28 +5,12 @@ class AuthService {
 
   constructor() {
     this.client
-      .setEndpoint(process.env.APPWRITE_URL!)
-      .setProject(process.env.APPWRITE_PROJECT_ID!);
+      .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_URL!)
+      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
 
     this.account = new Account(this.client);
   }
 
-  //   signup = async ({ username, email, password }) => {
-  //     try {
-  //       const user = await this.account.create(
-  //         ID.unique(), // Auto-generated unique ID
-  //         email, // Email
-  //         password, // Password
-  //         username // Optional: Name
-  //       );
-  //       return true;
-  //     } catch (error) {
-  //       showErrorToast(error.message);
-  //       console.error(error);
-
-  //       return false;
-  //     }
-  //   };
   login = async ({ email, password }: { email: string; password: string }) => {
     try {
       const response = await this.account.createEmailPasswordSession(

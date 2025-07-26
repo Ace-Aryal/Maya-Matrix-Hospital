@@ -2,17 +2,47 @@
 import React, { useState } from "react";
 import MaxWidth from "../templates/max-width";
 import { Button } from "../ui/button";
-import { Users, LogOut, LogIn, File, Menu, CrossIcon, X } from "lucide-react";
+import {
+  Users,
+  LogOut,
+  LogIn,
+  File,
+  Menu,
+  CrossIcon,
+  X,
+  Loader2,
+} from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "../templates/providers";
+import { useForm } from "react-hook-form";
+import authService from "@/appwrite/auth/auth";
+import { toast } from "sonner";
 
 function Navbar() {
-  const { isLoggedIn: isAuthenticated } = useAuthContext();
-
+  const { isLoggedIn: isAuthenticated, dispatchAuth } = useAuthContext();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
-
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm();
+  const handleLogout = async () => {
+    if (!dispatchAuth) {
+      return toast.error("Error logging out");
+    }
+    try {
+      await authService.logout();
+      dispatchAuth({
+        isLoggedIn: false,
+        roles: null,
+        username: null,
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Error logging out");
+    }
+  };
   return (
     <header
       className={cn(
@@ -41,7 +71,10 @@ function Navbar() {
                   <Users className="h-5 w-5" />
                 </Button>
               </Link>
-              <Button className="cursor-pointer">
+              <Button
+                onClick={handleSubmit(handleLogout)}
+                className="cursor-pointer"
+              >
                 Sign Out <LogOut />
               </Button>
             </>
@@ -97,8 +130,12 @@ function Navbar() {
                 duration: 0.4,
                 type: "spring",
               }}
-              className=" absolute inset-x-0 top-14 max-w-screen  overflow-hidden
-                "
+              className={cn(
+                `absolute inset-x-0 top-14 max-w-screen  overflow-hidden`,
+                {
+                  hidden: !isHamburgerOpen,
+                }
+              )}
             >
               <div
                 className=" 
@@ -118,8 +155,17 @@ function Navbar() {
                         <Users className="h-5 w-5" />
                       </Button>
                     </Link>
-                    <Button className="cursor-pointer">
-                      Sign Out <LogOut />
+                    <Button
+                      onClick={handleSubmit(handleLogout)}
+                      className="cursor-pointer w-32"
+                    >
+                      {isSubmitting ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <>
+                          Sign Out <LogOut />
+                        </>
+                      )}
                     </Button>
                   </>
                 ) : (

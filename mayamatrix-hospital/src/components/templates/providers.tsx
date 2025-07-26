@@ -1,6 +1,7 @@
 // a wrapper component consisting of all the providers to wrap the app
 "use client";
-import React, { createContext, useContext, useState } from "react";
+import authService from "@/appwrite/auth/auth";
+import React, { createContext, useContext, useEffect, useState } from "react";
 type TAuthContext = {
   isLoggedIn: boolean;
   username: string | null;
@@ -15,6 +16,21 @@ function Providers({ children }: { children: React.ReactNode }) {
     username: null,
     roles: null,
   });
+  async function getUserOnReload() {
+    const currentUser = await authService.getuser();
+    if (!currentUser) {
+      return;
+    }
+    const { name, labels } = currentUser;
+    setAuthData({
+      isLoggedIn: true,
+      username: name || "User",
+      roles: labels,
+    });
+  }
+  useEffect(() => {
+    getUserOnReload();
+  }, []);
   return (
     <AuthContext.Provider value={{ ...authData, dispatchAuth: setAuthData }}>
       {children}
