@@ -147,7 +147,7 @@ export default function Home() {
               support your journey to better health every step of the way.
             </p>
             <div className="my-4">
-              <Link href={"/"}>
+              <Link href={"#contact"}>
                 <Button className="cursor-pointer text-md rounded-full">
                   Book An Appointment
                 </Button>
@@ -358,7 +358,11 @@ export default function Home() {
                 )}
               </div>
 
-              <Button className="w-32 mt-2 p-5 text-lg" type="submit">
+              <Button
+                disabled={isSubmitting}
+                className="w-32 mt-2 p-5 text-lg"
+                type="submit"
+              >
                 {isSubmitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (

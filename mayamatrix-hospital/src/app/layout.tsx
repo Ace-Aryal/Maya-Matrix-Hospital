@@ -30,10 +30,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <Toaster richColors position="top-center" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Toaster richColors position="top-center" />
         <Navbar />
 
         <main className="min-h-[calc(100vh-56px-1px)] min-w-full flex flex-col">

@@ -54,9 +54,11 @@ function Navbar() {
               <Link href={"#contact"}>
                 <Button variant="link">Contact Us</Button>
               </Link>
-              <Button className="cursor-pointer">
-                Sign In <LogIn />
-              </Button>
+              <Link href={"/login"}>
+                <Button className="cursor-pointer">
+                  Sign In <LogIn />
+                </Button>
+              </Link>
             </>
           )}
         </nav>
@@ -129,9 +131,11 @@ function Navbar() {
                     <Link href={"#contact"}>
                       <Button variant="link">Contact Us</Button>
                     </Link>
-                    <Button className="cursor-pointer">
-                      Sign In <LogIn />
-                    </Button>
+                    <Link href={"/login"}>
+                      <Button className="cursor-pointer">
+                        Sign In <LogIn />
+                      </Button>
+                    </Link>
                   </>
                 )}
               </div>
