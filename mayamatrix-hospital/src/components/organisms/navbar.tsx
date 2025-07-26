@@ -45,13 +45,13 @@ function Navbar() {
             </>
           ) : (
             <>
-              <Link href={"#services"}>
+              <Link href={"/#services"}>
                 <Button variant="link">Services</Button>
               </Link>
-              <Link href={"#about"}>
+              <Link href={"/#about"}>
                 <Button variant="link">About Us</Button>
               </Link>
-              <Link href={"#contact"}>
+              <Link href={"/#contact"}>
                 <Button variant="link">Contact Us</Button>
               </Link>
               <Link href={"/login"}>
@@ -122,13 +122,13 @@ function Navbar() {
                   </>
                 ) : (
                   <>
-                    <Link href={"#services"}>
+                    <Link href={"/#services"}>
                       <Button variant="link">Services</Button>
                     </Link>
-                    <Link href={"#about"}>
+                    <Link href={"/#about"}>
                       <Button variant="link">About Us</Button>
                     </Link>
-                    <Link href={"#contact"}>
+                    <Link href={"/#contact"}>
                       <Button variant="link">Contact Us</Button>
                     </Link>
                     <Link href={"/login"}>

@@ -1,8 +1,11 @@
 "use client";
+import authService from "@/appwrite/auth/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type LoginFormInputs = {
   email: string;
@@ -10,6 +13,7 @@ type LoginFormInputs = {
 };
 
 export default function LoginForm() {
+  const router = useRouter();
   const {
     register,
     reset,
@@ -18,8 +22,13 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormInputs>();
 
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log(data);
+  const onSubmit = async (formData: LoginFormInputs) => {
+    const { email, password } = formData;
+    const response = await authService.login({ email, password });
+    if (response) {
+      toast.success("Logged in sucessfully!");
+      router.push("/dashboard");
+    }
   };
 
   return (
@@ -33,6 +42,8 @@ export default function LoginForm() {
         <div>
           <label className="block mb-1 font-medium">Email</label>
           <Input
+            className="py-5"
+            placeholder="Enter your email"
             {...register("email", {
               pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -48,6 +59,8 @@ export default function LoginForm() {
         <div>
           <label className="block mb-1 font-medium">Password</label>
           <Input
+            className="py-5"
+            placeholder="Enter your password"
             type="password"
             {...register("password", {
               required: "Password is required",
@@ -67,7 +80,7 @@ export default function LoginForm() {
         <Button
           disabled={isSubmitting}
           type="submit"
-          className="w-32 self-center text-md"
+          className="w-32 py-5 self-center text-md"
         >
           {isSubmitting ? (
             <Loader2 className="h-5 w-5 animate-spin" />
