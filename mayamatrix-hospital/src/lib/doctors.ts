@@ -24,4 +24,4 @@ export const DOCTORS = [
     department: "General Medicine",
     specialization: "Internal Medicine Specialist",
   },
-];
+] as const;
