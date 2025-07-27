@@ -13,6 +13,7 @@ import { UserDialog } from "@/components/organisms/user-dialog";
 
 function AdminDashboard() {
   const { roles, username } = useAuthContext();
+
   const isAdmin = roles?.includes("admin");
   const { data: appointments } = useQuery({
     queryKey: ["get-appointments", isAdmin],
@@ -43,6 +44,7 @@ function AdminDashboard() {
       </div>
     );
   }
+
   return (
     <MaxWidth>
       <section
@@ -51,6 +53,7 @@ function AdminDashboard() {
       >
         <h1 className="text-7xl font-semibold  ">Welcome {username}</h1>
         <UserDialog
+          action="add"
           title="Add new appointment"
           TriggerButton={<AppointmentButton action="add" />}
         />

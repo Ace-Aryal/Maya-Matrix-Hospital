@@ -1,8 +1,10 @@
 "use server";
+
 // server actions for admin dashboard crud operations
 // invoked from client components using react query
 import { prisma } from "@/lib/prisma";
-
+import { userSchema, UserSchema } from "@/lib/validators";
+import { revalidatePath, revalidateTag } from "next/cache";
 export async function getAppointments() {
   try {
     const users = await prisma.user.findMany();
@@ -12,4 +14,37 @@ export async function getAppointments() {
     console.error("Prisma error:", error);
     return { success: false, error: "Failed to fetch users" };
   }
+}
+export async function addAppointment(userData: UserSchema) {
+  console.log("userdata", userData);
+  const validation = userSchema.safeParse(userData);
+  if (!validation.success) {
+    throw new Error("Invalid shape of data");
+  }
+  const {
+    fullName,
+    address,
+    appointmentTime,
+    doctorAssigned,
+    email,
+    gender,
+    phoneNumber,
+    role,
+  } = userData;
+  const res = await prisma.user.create({
+    data: {
+      name: fullName,
+      address,
+      appointmentTime,
+      doctorAssigned,
+      email,
+      gender,
+      phoneNumber,
+      role,
+    },
+  });
+  if (!res.id) {
+    throw new Error("User creation failed ");
+  }
+  return res;
 }
