@@ -99,6 +99,16 @@ export const columns: ColumnDef<User>[] = [
       <div className="capitalize">{row.getValue("gender")}</div>
     ),
   },
+  {
+    accessorKey: "address",
+    header: "Address",
+    cell: ({ row }) => {
+      const { address } = row.original;
+      const displayAddress =
+        address.length <= 20 ? address : `${address.slice(0, 20)}...`;
+      return <div className="capitalize">{displayAddress}</div>;
+    },
+  },
 
   {
     id: "actions",
@@ -149,7 +159,13 @@ export const columns: ColumnDef<User>[] = [
   },
 ];
 
-export function AdminDashboardDataTable({ data }: { data: User[] }) {
+export function AdminDashboardDataTable({
+  data,
+  isFetching,
+}: {
+  data: User[];
+  isFetching: boolean;
+}) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -164,6 +180,7 @@ export function AdminDashboardDataTable({ data }: { data: User[] }) {
   const table = useReactTable({
     data,
     columns,
+
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -263,7 +280,7 @@ export function AdminDashboardDataTable({ data }: { data: User[] }) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {isFetching ? "Fetching Data" : "No results."}
                 </TableCell>
               </TableRow>
             )}

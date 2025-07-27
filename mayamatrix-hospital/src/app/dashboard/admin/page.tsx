@@ -4,29 +4,34 @@ import MaxWidth from "@/components/templates/max-width";
 import { useAuthContext } from "@/components/templates/providers";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { PenSquare, Plus } from "lucide-react";
-import React from "react";
+import { Plus } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { getAppointments } from "./actions";
 import { toast } from "sonner";
 import { AdminDashboardDataTable } from "./data-table";
 import { UserDialog } from "@/components/organisms/user-dialog";
+import authService from "@/appwrite/auth/auth";
 
 function AdminDashboard() {
   const { roles, username } = useAuthContext();
+  const [isLoading, setisLoading] = useState(true);
 
   const isAdmin = roles?.includes("admin");
-  const { data: appointments } = useQuery({
-    queryKey: ["get-appointments", isAdmin],
+  const { data: appointments, isLoading: isFetchingData } = useQuery({
+    queryKey: ["get-appointments"],
+    enabled: true,
+
     queryFn: async () => {
       try {
-        if (!isAdmin) {
+        const user = await authService.getuser();
+        if (!user) {
           return;
         }
         const res = await getAppointments();
         if (!res.success) {
           throw new Error(res.error);
         }
-        console.log(res, "res");
+
         return res;
       } catch (error) {
         console.error(error);
@@ -37,10 +42,17 @@ function AdminDashboard() {
       }
     },
   });
+  // using maximun three second timeout to wait for appwrite to validate user session
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setisLoading(false);
+    }, 3000);
+    return () => clearTimeout(timeOut);
+  }, []);
   if (!isAdmin) {
     return (
-      <div className="flex-1 h-full w-full flex justify-center">
-        <p>Unauthorized</p>
+      <div className="flex-1 h-full w-full flex justify-center items-center">
+        <p>{isLoading ? "Loading..." : "Unauthorized"}</p>
       </div>
     );
   }
@@ -59,7 +71,10 @@ function AdminDashboard() {
         />
       </section>
       <section id="bottom" className="my-8 mt-16">
-        <AdminDashboardDataTable data={appointments?.data || []} />
+        <AdminDashboardDataTable
+          isFetching={isFetchingData}
+          data={appointments?.data || []}
+        />
       </section>
     </MaxWidth>
   );

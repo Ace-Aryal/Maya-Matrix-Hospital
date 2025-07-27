@@ -89,16 +89,23 @@ export function UserDialog({
           throw new Error("Please perform actions via UI");
         }
         const res = await updateAppointment(formData, id);
+
         return res;
       }
     },
 
-    onSuccess: async () => {
-      ref.current?.click();
-      toast.success("Record added sucessfully");
-      await queryClient.refetchQueries({
-        predicate: (query) => query.queryKey[0] === "get-appointments",
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["get-appointments"],
+        refetchType: "all",
       });
+      // to close model
+
+      setTimeout(() => {
+        ref.current?.click();
+      }, 100); // slight delay ensures query runs first
+      toast.success("Record operation sucessful");
+
       reset();
     },
     onError: (error) => {
@@ -275,7 +282,7 @@ export function UserDialog({
               )}
             </div>
             <DialogFooter>
-              <DialogClose>
+              <DialogClose asChild>
                 <div>
                   <Button
                     ref={ref}

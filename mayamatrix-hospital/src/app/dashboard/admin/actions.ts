@@ -4,11 +4,13 @@
 // invoked from client components using react query
 import { prisma } from "@/lib/prisma";
 import { userSchema, UserSchema } from "@/lib/validators";
-import { revalidatePath, revalidateTag } from "next/cache";
 export async function getAppointments() {
   try {
-    const users = await prisma.user.findMany();
-    console.log(users, "users");
+    const users = await prisma.user.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
     return { success: true, data: users };
   } catch (error) {
     console.error("Prisma error:", error);
@@ -16,7 +18,6 @@ export async function getAppointments() {
   }
 }
 export async function addAppointment(userData: UserSchema) {
-  console.log("userdata", userData);
   const validation = userSchema.safeParse(userData);
   if (!validation.success) {
     throw new Error("Invalid shape of data");
@@ -50,7 +51,6 @@ export async function addAppointment(userData: UserSchema) {
 }
 
 export async function updateAppointment(userData: UserSchema, id: string) {
-  console.log("userdata", userData);
   const validation = userSchema.safeParse(userData);
   if (!validation.success) {
     throw new Error("Invalid shape of data");

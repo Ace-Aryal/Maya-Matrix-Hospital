@@ -10,7 +10,7 @@ type TAuthContext = {
   dispatchAuth?: React.Dispatch<React.SetStateAction<TAuthContext>>;
 };
 const AuthContext = createContext<TAuthContext | undefined>(undefined);
-
+const queryClient = new QueryClient();
 function Providers({ children }: { children: React.ReactNode }) {
   const [authData, setAuthData] = useState<TAuthContext>({
     isLoggedIn: false,
@@ -34,7 +34,7 @@ function Providers({ children }: { children: React.ReactNode }) {
   }, []);
   return (
     <AuthContext.Provider value={{ ...authData, dispatchAuth: setAuthData }}>
-      <QueryClientProvider client={new QueryClient()}>
+      <QueryClientProvider client={queryClient}>
         {" "}
         {children}
       </QueryClientProvider>

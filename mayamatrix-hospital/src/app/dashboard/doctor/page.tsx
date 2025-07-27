@@ -2,7 +2,7 @@
 "use client";
 import MaxWidth from "@/components/templates/max-width";
 import { useAuthContext } from "@/components/templates/providers";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,14 +15,21 @@ const appointments = [
 
 function DoctorDashboard() {
   const { roles, username } = useAuthContext();
-  console.log("roles", roles);
-  // if (!roles || !roles?.includes("doctor")) {
-  //   return (
-  //     <div className="flex-1 h-full w-full flex justify-center items-center">
-  //       <p>Unauthorized</p>
-  //     </div>
-  //   );
-  // }
+  const [isLoading, setisLoading] = useState(true);
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setisLoading(false);
+    }, 3000);
+    return () => clearTimeout(timeOut);
+  }, []);
+  if (!roles || !roles?.includes("doctor")) {
+    return (
+      <div className="flex-1 h-full w-full flex justify-center items-center">
+        <p>{isLoading ? "Loading..." : "Unauthorized"}</p>
+      </div>
+    );
+  }
+
   return (
     <MaxWidth>
       <section

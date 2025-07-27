@@ -41,9 +41,10 @@ export function DeleteDialog({
     },
     onSuccess: async () => {
       ref.current?.click();
-      toast.success("Record deleted sucessfully");
-      await queryClient.refetchQueries({
-        predicate: (query) => query.queryKey[0] === "get-appointments",
+
+      await queryClient.invalidateQueries({
+        queryKey: ["get-appointments"],
+        refetchType: "all",
       });
     },
     onError: (error) => {
@@ -72,16 +73,14 @@ export function DeleteDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose>
-            <div>
-              <Button
-                ref={ref}
-                type="button"
-                className="bg-red-100 text-red-600 hover:bg-red-200"
-              >
-                Cancel
-              </Button>
-            </div>
+          <DialogClose className="w-full" asChild>
+            <Button
+              ref={ref}
+              type="button"
+              className="bg-red-100 text-red-600 hover:bg-red-200 w-full sm:w-32"
+            >
+              Cancel
+            </Button>
           </DialogClose>
 
           <Button
