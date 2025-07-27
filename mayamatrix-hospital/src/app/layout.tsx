@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import MaxWidth from "@/components//templates/max-width";
 import Navbar from "@/components/organisms/navbar";
 import { Toaster } from "sonner";
 import Providers from "@/components/templates/providers";
@@ -19,9 +18,20 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "Mayamatrix Hospital",
-    template: " %s | Mayamatrix Hospital",
+    template: "%s | Mayamatrix Hospital",
   },
   description: "Serving the citizens for 25 years",
+  // open graph to make our app link look good when shared in the internet
+  openGraph: {
+    title: "Mayamatrix Hospital",
+    description: "Serving the citizens for 25 years",
+    images: [
+      {
+        url: "/mayamatrix.jpg",
+        alt: "Mayamatrix Hospital",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

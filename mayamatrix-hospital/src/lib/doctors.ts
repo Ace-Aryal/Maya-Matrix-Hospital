@@ -1,3 +1,4 @@
+// doctors constant data
 export const DOCTORS = [
   {
     name: "Dr. Aayush Sharma",

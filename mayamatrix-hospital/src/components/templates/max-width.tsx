@@ -1,3 +1,4 @@
+// Max width component to limit app width within this boundary
 import { cn } from "@/lib/utils";
 import React from "react";
 

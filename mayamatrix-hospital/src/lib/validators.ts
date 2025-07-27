@@ -1,3 +1,5 @@
+// zod validation that can be used on both client and server
+
 import { Gender, Roles } from "@/generated/prisma";
 import z from "zod";
 

@@ -32,6 +32,7 @@ function UserDashboard() {
     }, 3000);
     return () => clearTimeout(timeOut);
   }, []);
+  // RBAC
   if (!isLoggedIn) {
     return (
       <div className="flex-1 h-full w-full flex justify-center items-center">

@@ -1,4 +1,5 @@
-import { Client, Account, ID } from "appwrite";
+// Appwrite  client for auth
+import { Client, Account } from "appwrite";
 class AuthService {
   client = new Client();
   account;

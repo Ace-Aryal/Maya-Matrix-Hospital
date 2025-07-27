@@ -1,6 +1,6 @@
 "use server";
 
-// server actions for admin dashboard crud operations
+// server actions for admin dashboard CRUD operations
 // invoked from client components using react query
 import { prisma } from "@/lib/prisma";
 import { userSchema, UserSchema } from "@/lib/validators";

@@ -46,6 +46,7 @@ import { User } from "@/generated/prisma";
 import { UserDialog } from "@/components/organisms/user-dialog";
 import { DeleteDialog } from "@/components/organisms/delete-dialog";
 
+// all the columns definations
 export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
@@ -110,6 +111,7 @@ export const columns: ColumnDef<User>[] = [
     },
   },
 
+  // actions
   {
     id: "actions",
     header: "Actions",
@@ -173,6 +175,7 @@ export function AdminDashboardDataTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  // pagination of 8 entries per page
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 8,

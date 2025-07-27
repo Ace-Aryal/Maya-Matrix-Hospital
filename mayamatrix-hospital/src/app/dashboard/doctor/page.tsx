@@ -22,6 +22,7 @@ function DoctorDashboard() {
     }, 3000);
     return () => clearTimeout(timeOut);
   }, []);
+  // Role based access contol
   if (!roles || !roles?.includes("doctor")) {
     return (
       <div className="flex-1 h-full w-full flex justify-center items-center">

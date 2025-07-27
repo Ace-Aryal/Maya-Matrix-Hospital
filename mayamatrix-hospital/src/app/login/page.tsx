@@ -4,7 +4,7 @@ import authService from "@/appwrite/auth/auth";
 import { useAuthContext } from "@/components/templates/providers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, User } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -20,8 +20,6 @@ export default function LoginForm() {
 
   const {
     register,
-    reset,
-
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormInputs>();
@@ -52,6 +50,7 @@ export default function LoginForm() {
         username: currentUser.name || "User",
       });
       const { labels } = currentUser;
+      // Role based redirection
       const dashboardPath = labels.includes("admin")
         ? "/dashboard/admin"
         : labels.includes("doctor")

@@ -21,7 +21,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useAuthContext } from "@/components/templates/providers";
 
 const servicesConfig: ServicesCardProps[] = [
   {
@@ -67,7 +66,7 @@ export default function Home() {
     reset,
     formState: { isSubmitting, errors },
   } = useForm<FormFields>();
-
+  // submit contact form to formspree
   const onSubmit = async (formData: FormFields) => {
     const { name, message, phone } = formData;
     try {

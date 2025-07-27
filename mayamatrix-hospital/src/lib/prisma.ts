@@ -1,5 +1,5 @@
-// lib/prisma.ts
 
+// prisma client instantiation for next.js
 import { PrismaClient } from "@/generated/prisma";
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };

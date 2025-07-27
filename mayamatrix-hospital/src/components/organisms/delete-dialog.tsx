@@ -1,4 +1,4 @@
-// resuable dialog component
+// resuable dialog component for deletion
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";

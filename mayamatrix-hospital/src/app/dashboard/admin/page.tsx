@@ -17,10 +17,10 @@ function AdminDashboard() {
   const [isLoading, setisLoading] = useState(true);
 
   const isAdmin = roles?.includes("admin");
+  // Calling  server action to fetch users data
   const { data: appointments, isLoading: isFetchingData } = useQuery({
     queryKey: ["get-appointments"],
     enabled: true,
-
     queryFn: async () => {
       try {
         const user = await authService.getuser();
