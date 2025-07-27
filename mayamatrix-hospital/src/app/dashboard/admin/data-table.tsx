@@ -43,6 +43,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { User } from "@/generated/prisma";
+import { UserDialog } from "@/components/organisms/user-dialog";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -102,6 +103,7 @@ export const columns: ColumnDef<User>[] = [
     id: "actions",
     header: "Actions",
     cell: ({ row }) => {
+      const { id } = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -114,13 +116,26 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem className="mx-auto">
+            <DropdownMenuItem
+              className="mx-auto"
+              onSelect={(e) => e.preventDefault()}
+            >
               Delete Record <Trash2 className="text-red-600  rounded" />
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              Update Record
-              <PenSquare className="text-blue-600  rounded" />
-            </DropdownMenuItem>
+            <UserDialog
+              userData={row.original}
+              action="update"
+              title="Update Appointment"
+              id={id}
+              TriggerButton={
+                <div>
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    Update Record{" "}
+                    <PenSquare className="text-blue-600 rounded" />
+                  </DropdownMenuItem>
+                </div>
+              }
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       );

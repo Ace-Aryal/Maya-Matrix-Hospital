@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React from "react";
+import React, { useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Textarea } from "../ui/textarea";
 import {
@@ -28,6 +28,8 @@ type UserDialogProps = {
   TriggerButton: React.JSX.Element;
   title: string;
   action: "add" | "update";
+  id?: string;
+  userData?: User;
 };
 import { DOCTORS } from "@/lib/doctors";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -35,16 +37,24 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar, Loader2 } from "lucide-react";
 import "react-clock/dist/Clock.css";
-import { addAppointment } from "@/app/dashboard/admin/actions";
+import {
+  addAppointment,
+  updateAppointment,
+} from "@/app/dashboard/admin/actions";
 import { userSchema, UserSchema } from "@/lib/validators";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { useAuthContext } from "../templates/providers";
-import { useRouter } from "next/navigation";
+import { User } from "@/generated/prisma";
 // zod validatiion schema
 
-export function UserDialog({ TriggerButton, title, action }: UserDialogProps) {
+export function UserDialog({
+  TriggerButton,
+  title,
+  action,
+  id,
+  userData,
+}: UserDialogProps) {
   const queryClient = useQueryClient();
-  const router = useRouter();
+  const ref = useRef<HTMLButtonElement | null>(null);
   const {
     register,
     control,
@@ -53,6 +63,13 @@ export function UserDialog({ TriggerButton, title, action }: UserDialogProps) {
     formState: { errors, isSubmitting },
   } = useForm<UserSchema>({
     resolver: zodResolver(userSchema),
+    defaultValues: userData
+      ? {
+          ...userData,
+
+          fullName: userData.name,
+        }
+      : {},
   });
   const { mutate: onSubmit, isPending } = useMutation({
     mutationFn: async (formData: UserSchema) => {
@@ -60,8 +77,18 @@ export function UserDialog({ TriggerButton, title, action }: UserDialogProps) {
         const res = await addAppointment(formData);
         return res;
       }
+      if (action === "update") {
+        if (!id) {
+          // No id ? Probably they are navigation directly via url
+          throw new Error("Please perform actions via UI");
+        }
+        const res = await updateAppointment(formData, id);
+        return res;
+      }
     },
+
     onSuccess: async () => {
+      ref.current?.click();
       toast.success("Record added sucessfully");
       await queryClient.refetchQueries({
         predicate: (query) => query.queryKey[0] === "get-appointments",
@@ -80,6 +107,8 @@ export function UserDialog({ TriggerButton, title, action }: UserDialogProps) {
         <div>{TriggerButton}</div>
       </DialogTrigger>
       <DialogContent
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
         className=" min-w-xs overflow-auto max-h-[80vh] sm:max-h-[90vh]  sm:max-w-2xl w-fit sm:min-w-md "
       >
@@ -239,15 +268,25 @@ export function UserDialog({ TriggerButton, title, action }: UserDialogProps) {
                 </p>
               )}
             </div>
-            <DialogFooter className="">
+            <DialogFooter>
               <DialogClose>
                 <div>
-                  <Button className="w-full" variant={"modern"}>
+                  <Button
+                    ref={ref}
+                    type="button"
+                    className="w-full"
+                    variant={"modern"}
+                  >
                     Close
                   </Button>
                 </div>
               </DialogClose>
-              <Button className="w-full sm:w-32" type="submit">
+
+              <Button
+                disabled={isPending}
+                className="w-full sm:w-32"
+                type="submit"
+              >
                 {isPending || isSubmitting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : action === "add" ? (

@@ -48,3 +48,52 @@ export async function addAppointment(userData: UserSchema) {
   }
   return res;
 }
+
+export async function updateAppointment(userData: UserSchema, id: string) {
+  console.log("userdata", userData);
+  const validation = userSchema.safeParse(userData);
+  if (!validation.success) {
+    throw new Error("Invalid shape of data");
+  }
+  const {
+    fullName,
+    address,
+    appointmentTime,
+    doctorAssigned,
+    email,
+    gender,
+    phoneNumber,
+    role,
+  } = userData;
+  const res = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      name: fullName,
+      address,
+      appointmentTime,
+      doctorAssigned,
+      email,
+      gender,
+      phoneNumber,
+      role,
+    },
+  });
+  if (!res.id) {
+    throw new Error("User creation failed ");
+  }
+  return res;
+}
+
+export async function deleteAppointment(id: string) {
+  if (!id) {
+    throw new Error("Bad request");
+  }
+  const res = await prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+  return res;
+}

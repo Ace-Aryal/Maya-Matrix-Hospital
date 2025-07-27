@@ -73,15 +73,7 @@ function AppointmentButton({ action }: { action: "add" | "update" }) {
       variant={"modern"}
       className="w-fit my-6 sm:my-0 py-5  flex items-center text-md"
     >
-      {action === "add" ? (
-        <>
-          Add New Appointment <Plus className="w-6 h-6" />
-        </>
-      ) : (
-        <>
-          Add New Appointment <PenSquare className="w-6 h-6" />
-        </>
-      )}
+      Add New Appointment <Plus className="w-6 h-6" />
     </Button>
   );
 }
