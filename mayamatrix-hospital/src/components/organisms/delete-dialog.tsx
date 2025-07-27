@@ -33,9 +33,16 @@ export function DeleteDialog({
     mutationFn: async () => {
       await deleteAppointment(id);
     },
-    onSuccess: () => {
-      toast.success("Record deleted sucessfully");
+    onSuccess: async () => {
       ref.current?.click();
+      toast.success("Record deleted sucessfully");
+      await queryClient.refetchQueries({
+        predicate: (query) => query.queryKey[0] === "get-appointments",
+      });
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Error adding record");
     },
   });
 
@@ -64,8 +71,7 @@ export function DeleteDialog({
               <Button
                 ref={ref}
                 type="button"
-                className="w-full"
-                variant={"modern"}
+                className="bg-red-100 text-red-600 hover:bg-red-200"
               >
                 Cancel
               </Button>
@@ -75,7 +81,8 @@ export function DeleteDialog({
           <Button
             onClick={() => mutate()}
             disabled={isPending}
-            className="w-full sm:w-32 bg-red-100 text-red-600"
+            variant={"destructive"}
+            className="w-full sm:w-32"
             type="submit"
           >
             {isPending ? (

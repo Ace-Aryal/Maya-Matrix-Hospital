@@ -44,6 +44,7 @@ import {
 } from "@/components/ui/table";
 import { User } from "@/generated/prisma";
 import { UserDialog } from "@/components/organisms/user-dialog";
+import { DeleteDialog } from "@/components/organisms/delete-dialog";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -115,13 +116,18 @@ export const columns: ColumnDef<User>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            <DeleteDialog
+              TriggerButton={
+                <DropdownMenuItem
+                  className="mx-auto"
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  Delete Record <Trash2 className="text-red-600  rounded" />
+                </DropdownMenuItem>
+              }
+              id={id}
+            />
 
-            <DropdownMenuItem
-              className="mx-auto"
-              onSelect={(e) => e.preventDefault()}
-            >
-              Delete Record <Trash2 className="text-red-600  rounded" />
-            </DropdownMenuItem>
             <UserDialog
               userData={row.original}
               action="update"
