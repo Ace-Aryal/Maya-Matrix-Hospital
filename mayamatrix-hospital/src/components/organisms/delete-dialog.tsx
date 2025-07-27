@@ -1,3 +1,4 @@
+// resuable dialog component
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -16,6 +17,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { deleteAppointment } from "@/app/dashboard/admin/actions";
 import { toast } from "sonner";
+import { useAuthContext } from "../templates/providers";
 
 // zod validatiion schema
 
@@ -28,9 +30,13 @@ export function DeleteDialog({
 }) {
   const queryClient = useQueryClient();
   const ref = useRef<HTMLButtonElement | null>(null);
-
+  const { roles } = useAuthContext();
+  const isAdmin = roles?.includes("admin");
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
+      if (!isAdmin) {
+        throw new Error("Unauthorized");
+      }
       await deleteAppointment(id);
     },
     onSuccess: async () => {

@@ -44,6 +44,7 @@ import {
 import { userSchema, UserSchema } from "@/lib/validators";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { User } from "@/generated/prisma";
+import { useAuthContext } from "../templates/providers";
 // zod validatiion schema
 
 export function UserDialog({
@@ -71,8 +72,13 @@ export function UserDialog({
         }
       : {},
   });
+  const { roles } = useAuthContext();
+  const isAdmin = roles?.includes("admin");
   const { mutate: onSubmit, isPending } = useMutation({
     mutationFn: async (formData: UserSchema) => {
+      if (!isAdmin) {
+        throw new Error("Unauthorized");
+      }
       if (action === "add") {
         const res = await addAppointment(formData);
         return res;
