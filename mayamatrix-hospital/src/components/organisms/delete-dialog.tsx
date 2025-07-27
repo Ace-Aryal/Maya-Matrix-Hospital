@@ -41,7 +41,7 @@ export function DeleteDialog({
     },
     onSuccess: async () => {
       ref.current?.click();
-
+      toast.success("Record deleted sucessfully");
       await queryClient.invalidateQueries({
         queryKey: ["get-appointments"],
         refetchType: "all",
